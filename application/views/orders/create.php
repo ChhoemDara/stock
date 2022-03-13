@@ -46,10 +46,11 @@
                 <?php echo validation_errors(); ?>
 
                 <div class="form-group">
-                  <label for="gross_amount" class="col-sm-12 control-label">Date: <?php echo date('Y-m-d') ?></label>
+                  <label for="gross_amount" class="col-sm-12 control-label">Date: <?php echo date('Y-m-d ') ?></label>
                 </div>
                 <div class="form-group">
                   <label for="gross_amount" class="col-sm-12 control-label">Date: <?php echo date('h:i a') ?></label>
+                  <input type="hidden" class="form-control" id="date_time" name="date_time" value="<?php echo date('Y-m-d h:i:s') ?>" />
                 </div>
 
                 <div class="col-md-4 col-xs-12 pull pull-left">

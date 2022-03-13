@@ -22,11 +22,13 @@ class Orders extends Admin_Controller
 	*/
 	public function index()
 	{
+
 		if(!in_array('viewOrder', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
 
 		$this->data['page_title'] = 'Manage Orders';
+		
 		$this->render_template('orders/index', $this->data);		
 	}
 
@@ -36,17 +38,17 @@ class Orders extends Admin_Controller
 	*/
 	public function fetchOrdersData()
 	{
+
 		$result = array('data' => array());
 
 		$data = $this->model_orders->getOrdersData();
-
 		foreach ($data as $key => $value) {
 
 			$count_total_item = $this->model_orders->countOrderItem($value['id']);
-			$date = date('d-m-Y', $value['date_time']);
-			$time = date('h:i a', $value['date_time']);
-
-			$date_time = $date . ' ' . $time;
+			//$date = date('d-m-Y', $value['date_time']);
+			//$time = date('h:i a', $value['date_time']);
+			$date      = date_create($value['date_time']);
+			$date_time = date_format($date,"d/m/Y H:i");
 
 			// button
 			$buttons = '';
@@ -92,6 +94,7 @@ class Orders extends Admin_Controller
 	*/
 	public function create()
 	{
+
 		if(!in_array('createOrder', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
@@ -102,7 +105,7 @@ class Orders extends Admin_Controller
 		
 	
         if ($this->form_validation->run() == TRUE) {        	
-        	
+        
         	$order_id = $this->model_orders->create();
         	
         	if($order_id) {
@@ -116,6 +119,7 @@ class Orders extends Admin_Controller
         }
         else {
             // false case
+
         	$company = $this->model_company->getCompanyData(1);
         	$this->data['company_data'] = $company;
         	$this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
@@ -159,6 +163,7 @@ class Orders extends Admin_Controller
 	*/
 	public function update($id)
 	{
+
 		if(!in_array('updateOrder', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
@@ -173,7 +178,8 @@ class Orders extends Admin_Controller
 		
 	
         if ($this->form_validation->run() == TRUE) {        	
-        	
+        	/* print_r($this->input->post());
+ 			die(); */
         	$update = $this->model_orders->update($id);
         	
         	if($update == true) {
@@ -257,7 +263,10 @@ class Orders extends Admin_Controller
 			$orders_items = $this->model_orders->getOrdersItemData($id);
 			$company_info = $this->model_company->getCompanyData(1);
 
-			$order_date = date('d/m/Y', $order_data['date_time']);
+			//$order_date = date('d/m/Y', $order_data['date_time']);
+			$date      = date_create($order_data['date_time']);
+			$order_date = date_format($date,"d/m/Y H:i");
+
 			$paid_status = ($order_data['paid_status'] == 1) ? "Paid" : "Unpaid";
 
 			$html = '<!-- Main content -->

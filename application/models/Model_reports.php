@@ -114,4 +114,22 @@ class Model_reports extends CI_Model
 			
 		} 
 	}
+	public function getOrderDailyPaid()
+	{
+		
+		$start_date = date("Y-m-d H:i:s", mktime(0,0,0)); 
+		$end_date   = date("Y-m-d H:i:s", mktime(23,59,59));
+
+		$sql  = 'SELECT products.name,orders.customer_name,SUM(orders.net_amount)as amount  FROM orders  
+				LEFT JOIN orders_item ON orders.id = orders_item.order_id  
+				LEFT JOIN  products ON orders_item.product_id =products.id 
+				WHERE paid_status=? AND date_time >=? AND date_time <=? 
+				GROUP BY products.name,orders.customer_name ';
+
+		$query  = $this->db->query($sql, array(1,$start_date,$end_date));
+
+		return $query->result_array();
+
+	
+	}
 }

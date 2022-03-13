@@ -69,34 +69,47 @@
             <!-- /.box-header -->
             <div class="box-body">
               <table id="datatables" class="table table-bordered table-striped">
-                <thead>
+                 <thead>
                 <tr>
+                  <th>No</th>
                   <th>Daily</th>
+                  <th>Customer</th>
+                  <th>Product</th>
                   <th>Amount</th>
                 </tr>
                 </thead>
                 <tbody>
+                  <?php
+                    $total_amount=0;
+                  ?>
+                
 
-                  <?php foreach ($results as $k => $v): ?>
+                  <?php foreach ($report_daily as $k => $v): ?>
                     <tr>
-                      <td><?php echo $k; ?> </td>
-                      <td><?php 
-                      
-                        echo $company_currency .' '.$v;
-                      
-                        //echo $v;
-                      
-                      ?></td>
+                      <td><?php  echo $k+1; ?> </td>
+                      <!-- <td><?php echo($v['date_time']);?></td> -->
+                      <td><?php echo(date('d/m/Y'));?></td>
+                      <td><?php echo($v['customer_name']);?></td>
+                      <td><?php echo($v['name']);?></td>
+                      <td>
+                        <?php 
+                            $total_amount += $v['amount'];
+                           echo($v['amount']);
+                          ?>
+                    </td>
                     </tr>
                   <?php endforeach ?>
                   
                 </tbody>
                 <tbody>
                   <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                     <th>Total Amount</th>
                     <th>
                       <?php //echo $company_currency . ' ' . array_sum($parking_data); ?>
-                      <?php echo array_sum($results); ?>
+                      <?php echo $company_currency. ($total_amount); ?>
                     </th>
                   </tr>
                 </tbody>

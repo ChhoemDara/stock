@@ -64,14 +64,14 @@ class Reports extends Admin_Controller
 		
 		$today_daily = date('Y-m-d');
 
+
 		if($this->input->post('select_day')) {
 			$today_daily = $this->input->post('select_day');
 		}
 
-		$parking_data = $this->model_reports->getOrderData($today_daily);
-		$this->data['report_daily'] = $this->model_reports->getOrderDaily();
-		
-
+		$parking_data=[];
+		//$parking_data = $this->model_reports->getOrderData($today_daily);
+		//$this->data['report_daily'] = $this->model_reports->getOrderDaily();
 		$final_parking_data = array();
 		foreach ($parking_data as $k => $v) {
 			
@@ -90,9 +90,11 @@ class Reports extends Admin_Controller
 			
 		}
 		
-		$this->data['selected_day'] = $today_daily;
+		$this->data['selected_day']     = $today_daily;
 		$this->data['company_currency'] = $this->company_currency();
-		$this->data['results'] = $final_parking_data;
+		$this->data['results']          = $final_parking_data;
+		$this->data['report_daily']     = $this->model_reports->getOrderDailyPaid();
+
 
 		$this->render_template('reports/index', $this->data);
 	}
